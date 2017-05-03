@@ -1,0 +1,6 @@
+{% extends 'meson8b-odroidc1.jinja2' %}
+
+{% set connection_command = 'conmux-console lava-baylibre/meson8b-odroidc1' %}
+{% set hard_reset_command = '/usr/local/bin/acme-cli -s lab-acme-1 reboot 4' %}
+{% set power_off_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_off 4' %}
+{% set power_on_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_on 4' %}

@@ -1,0 +1,8 @@
+{% extends 'panda.jinja2' %}
+{% set connection_command = 'conmux-console lava-baylibre/omap4-panda-es' %}
+{% set hard_reset_command = '/usr/local/bin/acme-cli -s lab-acme-1 reboot 2' %}
+{% set power_off_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_off 2' %}
+{% set power_on_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_on 2' %}
+
+{% set bootloader_prompt = '=>' %}
+

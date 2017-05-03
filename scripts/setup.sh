@@ -20,12 +20,32 @@ lava-server manage workers add $(hostname)
 # Add devices on master
 lava-server manage device-types add qemu
 lava-server manage devices add  --device-type qemu --worker $(hostname) qemu-01
-lava-server manage add-device --device-type qemu --worker $(hostname) qemu-02
+lava-server manage devices add --device-type qemu --worker $(hostname) qemu-02
 
 # add remote workers
-SLAVE=fitlet-docker-slave
+SLAVE=lab-slave-0
 lava-server manage pipeline-worker --hostname $SLAVE
 
 # add remote devices
-lava-server manage add-device --device-type qemu --worker $SLAVE qemu-03
-lava-server manage add-device --device-type qemu --worker $SLAVE qemu-04
+
+# Array of <board name>:<LAVA device-type>
+#lava-server manage device-types add beaglebone-black
+#lava-server manage devices add --device-type beaglebone-black --worker $SLAVE am335x-boneblack
+#lava-server manage device-dictionary --hostname am335x-boneblack --import /etc/dispatcher-config/devices/am335x-boneblack.jinja2
+#exit 0
+
+#BOARDS="am335x-boneblack:beaglebone-black"
+BOARDS="am335x-boneblack:beaglebone-black omap4-panda-es:panda"
+#BOARDS="am335x-boneblack:beaglebone-black omap4-panda-es:panda meson8b-odroidc1-0:meson8b-odroidc1"
+
+
+for board_type in ${BOARDS}; do
+  IFS=':' read -a arr <<< "$board_type"
+  board_name=${arr[0]}
+  device_type=${arr[1]}
+  IFS=$OIFS
+
+  lava-server manage device-types add ${device_type}
+  lava-server manage devices add --device-type ${device_type} --worker $SLAVE ${board_name}
+  lava-server manage device-dictionary --hostname ${board_name} --import /etc/dispatcher-config/devices/${board_name}.jinja2
+done

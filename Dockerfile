@@ -3,6 +3,7 @@ FROM kernelci/lava-docker:2017.06
 # Add device configuration
 COPY devices/* /etc/lava-server/dispatcher-config/devices/
 COPY device-types/* /etc/lava-server/dispatcher-config/device-types
+COPY dispatcher.d/* /etc/lava-server/dispatcher.d/
 
 COPY scripts/setup.sh .
 
