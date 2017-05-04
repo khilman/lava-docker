@@ -1,0 +1,5 @@
+{% extends 'meson-gxbb-p200.jinja2' %}
+{% set connection_command = 'conmux-console lava-baylibre/meson-gxbb-p200' %}
+{% set hard_reset_command = '/usr/local/bin/acme-cli -s lab-acme-1 reset 6' %}
+{% set power_off_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_off 6' %}
+{% set power_on_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_on 6' %}

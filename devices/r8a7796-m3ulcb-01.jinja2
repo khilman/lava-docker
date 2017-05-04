@@ -1,0 +1,5 @@
+{% extends 'r8a7796-m3ulcb.jinja2' %}
+{% set connection_command = 'conmux-console lava-baylibre/r8a7796-m3ulcb' %}
+{% set hard_reset_command = '/usr/local/bin/acme-cli -s lab-acme-1 reset 8' %}
+{% set power_off_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_off 8' %}
+{% set power_on_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_on 8' %}
