@@ -1,0 +1,5 @@
+{% extends 'da850-evm.jinja2' %}
+{% set connection_command = 'conmux-console lava-baylibre/da850-evm' %}
+{% set hard_reset_command = '/usr/local/bin/acme-cli -s lab-acme-1 reset 3' %}
+{% set power_off_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_off 3' %}
+{% set power_on_command = '/usr/local/bin/acme-cli -s lab-acme-1 switch_on 3' %}
