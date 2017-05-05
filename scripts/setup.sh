@@ -6,6 +6,7 @@ fi
 # Create users
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('kernel-ci', 'admin@localhost.com', 'kernel-ci')" | lava-server manage shell
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('khilman', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('jbrunet', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
 
 # Set the kernelci user's API token
 if [[ -n "$LAVA_API_TOKEN" ]]; then
