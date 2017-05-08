@@ -1,5 +1,11 @@
 FROM kernelci/lava-docker:2017.06
 
+# Additional packages
+RUN DEBIAN_FRONTEND=noninteractive install_packages openssh-server
+
+# Add local user w/sudo privs
+RUN useradd -m baylibre && echo "baylibre:baylibre" | chpasswd && adduser baylibre sudo
+
 # Update to latest lava-server
 RUN /start.sh && \
   cd /root/lava-server && git remote update && git checkout -f 2f6287e71cf5 && \
@@ -16,6 +22,8 @@ COPY dispatcher.d/* /etc/lava-server/dispatcher.d/
 COPY scripts/setup.sh .
 COPY scripts/add-boards.py .
 
-EXPOSE 69/udp 80 3079 5555 5556
+EXPOSE 22 80 3079 5555 5556
 
-CMD /start.sh && /setup.sh && bash
+CMD /start.sh && /setup.sh && \
+  /usr/sbin/service ssh start && \
+  bash
