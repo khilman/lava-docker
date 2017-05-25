@@ -5,6 +5,7 @@ if [[ -n "$LAVA_SERVER_IP" ]]; then
 fi
 # Create users
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('kernel-ci', 'admin@localhost.com', 'kernel-ci')" | lava-server manage shell
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('agl-jenkins', 'admin@localhost.com', 'agl4lava')" | lava-server manage shell
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('khilman', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('jbrunet', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('ptitiano', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
@@ -15,9 +16,15 @@ if [[ -n "$LAVA_API_TOKEN" ]]; then
 else
 	lava-server manage tokens add --user kernel-ci
 fi
+# Set the kernelci user's API token
+if [[ -n "$AGL_API_TOKEN" ]]; then
+	lava-server manage tokens add --user agl-jenkins --secret $AGL_API_TOKEN
+else
+	lava-server manage tokens add --user agl-jenkins
+fi
 
 # By default add a worker on the master
-lava-server manage workers add $(HOSTNAME)
+lava-server manage workers add $(hostname)
 
 # Add devices on master
 lava-server manage device-types add qemu
