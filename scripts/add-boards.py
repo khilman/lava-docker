@@ -10,9 +10,11 @@ import subprocess
 devices_dir = "/etc/dispatcher-config/devices"
 
 template = string.Template("""# ${board_name};  device_type: ${device_type}
-lava-server manage device-types add ${device_type}
-lava-server manage devices add --device-type ${device_type} --worker ${slave} ${board_name}
-lava-server manage device-dictionary --hostname ${board_name} --import /etc/dispatcher-config/devices/${board_name}.jinja2
+if [ -e /etc/lava-server/dispatcher-config/device-types/${device_type}.jinja2 ]; then \
+  lava-server manage device-types add ${device_type}; \
+  lava-server manage devices add --device-type ${device_type} --worker ${slave} ${board_name}; \
+  lava-server manage device-dictionary --hostname ${board_name} --import /etc/dispatcher-config/devices/${board_name}.jinja2; \
+fi
 """)
 
 def main(args):
