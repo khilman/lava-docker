@@ -14,6 +14,8 @@ if [ -e /etc/lava-server/dispatcher-config/device-types/${device_type}.jinja2 ];
   lava-server manage device-types add ${device_type}; \
   lava-server manage devices add --device-type ${device_type} --worker ${slave} ${board_name}; \
   lava-server manage device-dictionary --hostname ${board_name} --import /etc/dispatcher-config/devices/${board_name}.jinja2; \
+else \
+  echo "WARNING: Missing device-type jinja2 file for ${device_type}."; \
 fi
 """)
 
@@ -32,7 +34,7 @@ def main(args):
 
         commands = template.substitute(slave=args.slave, board_name=board_name, device_type=device_type)
         for cmd in commands.splitlines():
-            print cmd
+#            print cmd
             subprocess.call(cmd, shell=True)
             
 if __name__ == "__main__":
