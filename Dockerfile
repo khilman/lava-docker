@@ -19,6 +19,9 @@ COPY device-types/* /etc/lava-server/dispatcher-config/device-types/
 # Fixup: set dispatcher IP to docker host instead of container (for TFTP)
 COPY dispatcher.d/* /etc/lava-server/dispatcher.d/
 
+RUN mkdir -p /tmp/tokens
+COPY tokens/* /tmp/tokens/
+
 COPY scripts/setup.sh .
 COPY scripts/add-boards.py .
 
