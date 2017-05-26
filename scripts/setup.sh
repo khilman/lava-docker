@@ -30,6 +30,15 @@ lava-server manage workers add $(hostname)
 #lava-server manage devices add --device-type qemu --worker $(hostname) qemu-02
 #lava-server manage device-dictionary --hostname qemu-02 --import /etc/dispatcher-config/devices/qemu-device-dictionary.jinja2
 
+# Hack for aliases
+pushd /etc/lava-server/dispatcher-config/device-types/
+ln -s beaglebone-black.jinja2 am335x-boneblack.jinja2
+ln -s panda.jinja2 omap4-panda-es.jinja2
+
+echo "Created symlinks"
+find . -maxdepth 1 -type l
+popd
+
 # add remote workers
 SLAVE=lab-slave-0
 lava-server manage workers add $SLAVE
