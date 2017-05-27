@@ -31,7 +31,10 @@ def main(args):
         m = re.search("extends \'(.*)\.jinja2\'", line)
         if m:
             device_type = m.group(1)
-
+        else:
+            print "ERROR: Unable to find device-type in %s." % file
+            continue
+        
         commands = template.substitute(slave=args.slave, board_name=board_name, device_type=device_type)
         for cmd in commands.splitlines():
 #            print cmd
