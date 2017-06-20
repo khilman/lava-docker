@@ -7,10 +7,12 @@ RUN DEBIAN_FRONTEND=noninteractive install_packages openssh-server
 RUN useradd -m baylibre && echo "baylibre:baylibre" | chpasswd && adduser baylibre sudo
 
 # Update to latest lava-server
-#RUN /start.sh && \
-#  cd /root/lava-server && git remote update && git checkout -f origin/release && \
-#  /usr/share/lava-server/debian-dev-build.sh -p lava-server && \
-#  /stop.sh
+RUN /start.sh && \
+  cd /root/lava-server && git remote update && git checkout -f origin/release && \
+  git fetch https://review.linaro.org/lava/lava-server refs/changes/71/20171/1 && \
+  git cherry-pick FETCH_HEAD && \
+  /usr/share/lava-server/debian-dev-build.sh -p lava-server && \
+  /stop.sh
 
 # Add device configuration
 COPY devices/* /etc/lava-server/dispatcher-config/devices/
