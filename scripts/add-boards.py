@@ -22,6 +22,8 @@ def main(args):
     os.chdir(devices_dir)
     for file in glob.glob("*.jinja2"):
         board_name, suffix = os.path.splitext(file)
+        if board_name.startswith("qemu"):
+            continue
         fp = open(file, "r")
         line = fp.readline()
         fp.close

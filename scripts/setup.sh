@@ -26,7 +26,6 @@ lava-server manage workers add $(hostname)
 # Add devices on master
 lava-server manage device-types add qemu
 lava-server manage devices add  --device-type qemu --worker $(hostname) qemu-01
-lava-server manage devices add --device-type qemu --worker $(hostname) qemu-02
 
 # add remote workers
 SLAVE=lab-slave-0
