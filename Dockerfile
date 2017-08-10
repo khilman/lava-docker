@@ -26,7 +26,8 @@ RUN cat /etc/lava-server/env.yaml.append >> /etc/lava-server/env.yaml
 RUN mkdir -p /tmp/tokens
 COPY tokens/* /tmp/tokens/
 
-# extra token magic
+# kCI callback tokens
+COPY config/kci-callback-token /tmp
 COPY config/kci-staging-token /tmp
 
 COPY scripts/setup.sh .

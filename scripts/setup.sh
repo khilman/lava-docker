@@ -20,6 +20,15 @@ for file in $(ls /tmp/tokens/*); do
     rm -f $file
 done
 
+# add callback token for kernel-ci staging backend
+if [ -e /tmp/kci-callback-token ]; then
+    lava-server manage tokens add --user kernel-ci --secret $(cat /tmp/kci-callback-token) --description "kernel-ci-callback"
+fi
+# add callback token for kernel-ci staging backend
+if [ -e /tmp/kci-staging-token ]; then
+    lava-server manage tokens add --user kernel-ci --secret $(cat /tmp/kci-staging-token) --description "kernel-ci-callback-staging"
+fi
+
 # By default add a worker on the master
 lava-server manage workers add $(hostname)
 
