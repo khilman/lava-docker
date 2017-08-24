@@ -1,0 +1,13 @@
+#!/bin/sh
+IMAGE=bl-lava-master
+CONT=lava_master
+HOSTNAME=lava-baylibre-docker
+
+docker build -t $IMAGE .
+
+sudo systemctl stop docker-container@$CONT
+
+docker create --rm=true -it -p 1022:22 -p 10080:80 -p 80:80 -p 5555:5555 -p 5556:5556 -h $HOSTNAME --privileged --name $CONT $IMAGE
+
+sudo systemctl start docker-container@$CONT
+sudo systemctl status docker-container@$CONT
