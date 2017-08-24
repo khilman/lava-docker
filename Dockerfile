@@ -1,4 +1,4 @@
-FROM kernelci/lava-docker:2017.06
+FROM baylibre/lava-docker:2017.07
 
 # Additional packages
 RUN DEBIAN_FRONTEND=noninteractive install_packages openssh-server
@@ -8,7 +8,10 @@ RUN useradd -m baylibre && echo "baylibre:baylibre" | chpasswd && adduser baylib
 
 # Update to latest lava-server
 RUN /start.sh && \
-  cd /root/lava-server && git remote update && git checkout -f origin/lab-baylibre && \
+  cd /root/lava-server && \
+  git remote add --no-tags khilman https://github.com/khilman/lava-server.git && \
+  git remote update && \
+  git checkout -f khilman/lab-baylibre && git log -n5 --oneline && git describe && \
   /usr/share/lava-server/debian-dev-build.sh -p lava-server && \
   /stop.sh
 
