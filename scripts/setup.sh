@@ -5,9 +5,7 @@ if [[ -n "$LAVA_SERVER_IP" ]]; then
 fi
 
 # Create admin users
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('khilman', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('jbrunet', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('ptitiano', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
+# echo "from django.contrib.auth.models import User; User.objects.create_superuser('khilman', 'admin@localhost.com', 'lava4me')" | lava-server manage shell
 
 # Add users and tokens from /tmp/tokens
 for file in $(ls /tmp/tokens/*); do
