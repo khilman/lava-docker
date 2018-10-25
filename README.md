@@ -256,6 +256,7 @@ slaves:
       - p1:p2
     extra_actions:		An optional list of action to do at end of the docker build
     - "apt-get install package"
+    http_proxy: http://dns:port	An optional proxy used for all slave actions
 
 boards:
   - name: devicename	Each board must be named by their device-type as "device-type-XX" (where XX is a number)
