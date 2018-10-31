@@ -1,0 +1,124 @@
+masters:
+  - name: master1
+    host: local
+    users:
+    - name: admin
+      token: longrandomtokenadmin
+      password: admin
+      superuser: yes
+      staff: yes
+    tokens:
+    - username: admin
+      token: dfjdfkfkdjfkdsjfsl
+      description: no description
+
+  - name: lab-baylibre-master
+    host: remote
+    users:
+    - name: admin
+      token: longrandomtokenadmin
+      password: admin
+      superuser: yes
+      staff: yes
+
+slaves:
+
+  - name: lab-seattle
+    host: nuc-2
+    remote_master: lab-baylibre-master
+    remote_address: 10.1.1.4
+    remote_rpc_port: 10080
+    remote_user: admin
+    dispatcher_ip: 192.168.0.2
+    default_slave: true
+    export_ser2net: true
+    extra_actions:
+    - "apt-get -y install conmux lavapdu-client"
+
+boards:
+
+  - name: am335x-boneblack-sea
+    type: beaglebone-black
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host phidget4-E6-2 --port 1 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host phidget4-E6-2 --port 1 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host phidget4-E6-2 --port 1 --command on 
+    connection_command: conmux-console nuc-1/am335x-boneblack        
+
+  - name: exynos5422-odroidxu3-sea
+    type: odroid-xu3
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host phidget8-E10 --port 5 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host phidget8-E10 --port 5 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host phidget8-E10 --port 5 --command on 
+    connection_command: conmux-console nuc-1/exynos5422-odroidxu3        
+
+  - name: juno-r2-sea
+    type: juno-uboot
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host sain-net-1 --port 1 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host sain-net-1 --port 1 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host sain-net-1 --port 1 --command on 
+    connection_command: conmux-console nuc-1/juno-r2        
+
+  - name: meson-gxbb-p200-sea
+    type: meson-gxbb-p200
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host acme-0 --port 4 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host acme-0 --port 4 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host acme-0 --port 4 --command on 
+    connection_command: conmux-console nuc-2/meson-gxbb-p200        
+
+  - name: tegra124-jetson-tk1-sea
+    type: jetson-tk1
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host sain-net-1 --port 5 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host sain-net-1 --port 5 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host sain-net-1 --port 5 --command on 
+    connection_command: conmux-console nuc-1/tegra124-jetson-tk1        
+
+  - name: bcm2837-rpi-3-b-sea
+    type: bcm2837-rpi-3-b
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 15 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 15 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 15 --command on 
+    connection_command: conmux-console nuc-2/bcm2837-rpi-3-b        
+
+  - name: omap3-beagle-xm-sea
+    type: beagle-xm
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host phidget4-E6-1 --port 2 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host phidget4-E6-1 --port 2 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host phidget4-E6-1 --port 2 --command on 
+    connection_command: conmux-console nuc-1/omap3-beagle-xm        
+    custom_option:
+    - 'set bootloader_prompt = "BeagleBoard #"'
+
+  - name: meson8b-odroidc1-sea
+    type: meson8b-odroidc1
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 14 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 14 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 14 --command on 
+    connection_command: conmux-console nuc-2/meson8b-odroidc1        
+
+  - name: meson-gxl-s905x-khadas-vim-sea
+    type: meson-gxl-s905x-khadas-vim
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host acme-0 --port 1 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host acme-0 --port 1 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host acme-0 --port 1 --command on 
+    connection_command: conmux-console nuc-2/meson-gxl-s905x-khadas-vim        
+    custom_option:
+    - 'set bootloader_prompt = "kvim#"'
+
+  - name: sun7i-a20-cubietruck-sea
+    type: cubietruck
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host phidget8-E2 --port 4 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host phidget8-E2 --port 4 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host phidget8-E2 --port 4 --command on 
+    connection_command: conmux-console nuc-1/sun7i-a20-cubietruck        
+    custom_option:
+    - 'set bootloader_prompt = "=>"'
