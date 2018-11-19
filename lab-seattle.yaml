@@ -94,6 +94,7 @@ boards:
     connection_command: conmux-console nuc-1/omap3-beagle-xm        
     custom_option:
     - 'set bootloader_prompt = "BeagleBoard #"'
+    - 'set base_high_limits = false'
 
   - name: meson8b-odroidc1-sea
     type: meson8b-odroidc1
