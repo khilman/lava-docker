@@ -60,7 +60,12 @@ boards:
        hard_reset_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 15 --command reboot 
        power_off_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 15 --command off 
        power_on_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 15 --command on 
-    connection_command: conmux-console nuc-2/bcm2837-rpi-3-b        
+#    connection_command: conmux-console nuc-2/bcm2837-rpi-3-b        
+    uart:
+       use_ser2net: True
+       idvendor: 0x0403
+       idproduct: 0x6001
+       serial: FTG43K2Q
 
   - name: omap3-beagle-xm-sea
     type: beagle-xm
