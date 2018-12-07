@@ -1,37 +1,14 @@
-masters:
-  - name: master1
-    host: local
-    users:
-    - name: admin
-      token: longrandomtokenadmin
-      password: admin
-      superuser: yes
-      staff: yes
-    tokens:
-    - username: admin
-      token: dfjdfkfkdjfkdsjfsl
-      description: no description
-
-  - name: lab-baylibre-master
-    host: remote
-    users:
-    - name: admin
-      token: longrandomtokenadmin
-      password: admin
-      superuser: yes
-      staff: yes
-
 slaves:
 
   - name: lab-seattle
     host: nuc-2
-    remote_master: lab-baylibre-master
     remote_address: 10.1.1.4
     remote_rpc_port: 10080
     remote_user: admin
+    remote_user_token: longrandomtokenadmin
     dispatcher_ip: 192.168.0.2
     default_slave: true
-    export_ser2net: true
+    expose_ser2net: true
     extra_actions:
     - "apt-get -y install conmux lavapdu-client"
 
