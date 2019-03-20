@@ -30,14 +30,6 @@ boards:
        power_on_command: pduclient --daemon nuc-2 --host phidget8-E10 --port 5 --command on 
     connection_command: conmux-console nuc-1/exynos5422-odroidxu3        
 
-  - name: juno-r2-sea
-    type: juno-uboot
-    pdu_generic:
-       hard_reset_command: pduclient --daemon nuc-2 --host sain-net-1 --port 1 --command reboot 
-       power_off_command: pduclient --daemon nuc-2 --host sain-net-1 --port 1 --command off 
-       power_on_command: pduclient --daemon nuc-2 --host sain-net-1 --port 1 --command on 
-    connection_command: conmux-console nuc-1/juno-r2        
-
   - name: meson-gxbb-p200-sea
     type: meson-gxbb-p200
     pdu_generic:
