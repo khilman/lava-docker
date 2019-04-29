@@ -10,7 +10,7 @@ slaves:
     default_slave: true
     expose_ser2net: true
     extra_actions:
-    - "apt-get -y install conmux lavapdu-client"
+    - "apt-get -y install conmux lavapdu-client lava-lxc-mocker android-tools-fastboot android-tools-adb skales"
 
 boards:
 
