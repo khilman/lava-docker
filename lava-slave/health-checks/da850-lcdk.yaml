@@ -1,0 +1,84 @@
+
+
+
+metadata:
+  image.type: 'kernel-ci'
+  image.url: http://storage.kernelci.org/stable/linux-5.0.y/v5.0.14/arm/davinci_all_defconfig/gcc-8/
+  kernel.tree: stable
+  kernel.version: v5.0.14
+  kernel.endian: little
+  kernel.defconfig: davinci_all_defconfig
+  kernel.defconfig_base: davinci_all_defconfig
+  kernel.arch_defconfig: arm-davinci_all_defconfig
+  platform.dtb: da850-lcdk.dtb
+  platform.dtb_short: da850-lcdk.dtb
+  platform.fastboot: false
+  platform.name: da850-lcdk
+  platform.mach: davinci
+  test.plan: boot
+  git.commit: 274ede3e1a5fb3d0fd33acafb08993e95972c51f
+  git.describe: v5.0.14
+  git.branch: linux-5.0.y
+  git.url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+  device.type: da850-lcdk
+  job.arch: arm
+  job.name: stable-linux-5.0.y-v5.0.14-arm-davinci_all_defconfig-gcc-8-da850-lcdk.dtb-da850-lcdk-boot
+  job.kernel_url: http://storage.kernelci.org/stable/linux-5.0.y/v5.0.14/arm/davinci_all_defconfig/gcc-8/zImage
+  job.kernel_image: zImage
+  job.modules_url: http://storage.kernelci.org/stable/linux-5.0.y/v5.0.14/arm/davinci_all_defconfig/gcc-8/modules.tar.xz
+  job.initrd_url: https://storage.kernelci.org/images/rootfs/buildroot/kci-2018.11/armel/base/rootfs.cpio.gz
+  job.nfsrootfs_url: None
+  job.dtb_url: http://storage.kernelci.org/stable/linux-5.0.y/v5.0.14/arm/davinci_all_defconfig/gcc-8/dtbs/da850-lcdk.dtb
+  job.file_server_resource: stable/linux-5.0.y/v5.0.14/arm/davinci_all_defconfig/gcc-8
+  job.build_environment: gcc-8
+
+
+
+
+
+device_type: da850-lcdk
+
+
+
+job_name: stable-linux-5.0.y-v5.0.14-arm-davinci_all_defconfig-gcc-8-da850-lcdk.dtb-da850-lcdk-boot
+timeouts:
+  job:
+    minutes: 10
+  action:
+   minutes: 10
+  actions:
+    power-off:
+      seconds: 30
+priority: high
+visibility: public
+
+
+
+
+
+actions:
+- deploy:
+    timeout:
+      minutes: 2
+    to: tftp
+    kernel:
+      url: http://storage.kernelci.org/stable/linux-5.0.y/v5.0.14/arm/davinci_all_defconfig/gcc-8/zImage
+      type: zimage
+    ramdisk:
+      url: https://storage.kernelci.org/images/rootfs/buildroot/kci-2018.11/armel/base/rootfs.cpio.gz
+      compression: gz
+    modules:
+      url: http://storage.kernelci.org/stable/linux-5.0.y/v5.0.14/arm/davinci_all_defconfig/gcc-8/modules.tar.xz
+      compression: xz
+    dtb:
+      url: http://storage.kernelci.org/stable/linux-5.0.y/v5.0.14/arm/davinci_all_defconfig/gcc-8/dtbs/da850-lcdk.dtb
+    os: oe
+
+
+- boot:
+    timeout:
+      minutes: 5
+    method: u-boot
+    commands: ramdisk
+    prompts:
+      - '/ #'
