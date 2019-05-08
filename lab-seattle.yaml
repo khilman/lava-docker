@@ -66,9 +66,17 @@ boards:
        power_off_command: pduclient --daemon nuc-2 --host phidget4-E6-1 --port 2 --command off 
        power_on_command: pduclient --daemon nuc-2 --host phidget4-E6-1 --port 2 --command on 
     connection_command: conmux-console nuc-1/omap3-beagle-xm        
-    custom_option:
-    - 'set bootloader_prompt = "BeagleBoard #"'
-    - 'set base_high_limits = false'
+    custom_option: |-
+       set bootloader_prompt = "BeagleBoard #"
+       set base_high_limits = false
+
+  - name: da850-lcdk-sea
+    type: da850-lcdk
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 16 --command reboot --delay=1
+       power_off_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 16 --command off --delay=1
+       power_on_command: pduclient --daemon nuc-2 --host sain-usb-1 --port 16 --command on --delay=1
+    connection_command: conmux-console nuc-2/da850-lcdk        
 
   - name: meson8b-odroidc1-sea
     type: meson8b-odroidc1
@@ -85,8 +93,19 @@ boards:
        power_off_command: pduclient --daemon nuc-2 --host acme-0 --port 1 --command off 
        power_on_command: pduclient --daemon nuc-2 --host acme-0 --port 1 --command on 
     connection_command: conmux-console nuc-2/meson-gxl-s905x-khadas-vim        
-    custom_option:
-    - 'set bootloader_prompt = "kvim#"'
+    custom_option: |-
+       set bootloader_prompt = "kvim#"
+
+  - name: omap4-panda-es-sea
+    type: panda
+    pdu_generic:
+       hard_reset_command: pduclient --daemon nuc-2 --host phidget4-E6-1 --port 0 --command reboot 
+       power_off_command: pduclient --daemon nuc-2 --host phidget4-E6-1 --port 0 --command off 
+       power_on_command: pduclient --daemon nuc-2 --host phidget4-E6-1 --port 0 --command on 
+    connection_command: conmux-console nuc-1/omap4-panda-es        
+    custom_option: |-
+       set bootloader_prompt = "Panda #"
+       set uboot_usb_commands = '          - "setenv usbethaddr 2e:40:70:f0:12:07; usb start"'
 
   - name: sun7i-a20-cubietruck-sea
     type: cubietruck
@@ -95,5 +114,5 @@ boards:
        power_off_command: pduclient --daemon nuc-2 --host phidget8-E2 --port 4 --command off 
        power_on_command: pduclient --daemon nuc-2 --host phidget8-E2 --port 4 --command on 
     connection_command: conmux-console nuc-1/sun7i-a20-cubietruck        
-    custom_option:
-    - 'set bootloader_prompt = "=>"'
+    custom_option: |-
+       set bootloader_prompt = "=>"
