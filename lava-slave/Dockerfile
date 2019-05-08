@@ -47,6 +47,10 @@ RUN chmod +x /root/entrypoint.d/*
 
 RUN if [ -x /usr/local/bin/extra_actions ] ; then /usr/local/bin/extra_actions ; fi
 
+# add custom device-types and corresponding health checks
+COPY device-types/ /root/device-types/
+COPY health-checks/ /root/health-checks/
+
 EXPOSE 69/udp 80
 
 CMD /usr/local/bin/start.sh

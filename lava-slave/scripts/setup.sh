@@ -47,6 +47,17 @@ if [ -e /root/device-types ];then
 		echo "Adding custom $devicetype"
 		lavacli $LAVACLIOPTS device-types list || exit $?
 		touch /root/.lavadocker/devicetype-$devicetype
+
+		echo "Adding custom $devicetype template: $i"
+		lavacli $LAVACLIOPTS device-types template set $devicetype $i
+		lavacli $LAVACLIOPTS device-types template get $devicetype
+		lavacli $LAVACLIOPTS device-types add $devicetype
+
+		hc_file="/root/health-checks/$devicetype.yaml"
+		if [ -e $hc_file ]; then
+		    echo "Adding custom health-check for $devicetype: $hc_file"
+		    lavacli $LAVACLIOPTS device-types health-check set $devicetype $hc_file
+		fi
 	done
 fi
 
