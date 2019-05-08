@@ -96,6 +96,10 @@ RUN chmod 755 /usr/local/bin/pycambrionyx.py
 
 RUN apt-get -y install lava-lxc-mocker
 
+# add custom device-types and corresponding health checks
+COPY device-types/ /root/device-types/
+COPY health-checks/ /root/health-checks/
+
 EXPOSE 69/udp 80
 
 CMD /start.sh
