@@ -1,0 +1,90 @@
+
+
+
+metadata:
+  image.type: 'kernel-ci'
+  image.url: http://storage.kernelci.org/stable/linux-5.2.y/v5.2.9/arm64/defconfig/gcc-8/
+  kernel.tree: stable
+  kernel.version: v5.2.9
+  kernel.endian: little
+  kernel.defconfig: defconfig
+  kernel.defconfig_base: defconfig
+  kernel.arch_defconfig: arm64-defconfig
+  platform.dtb: amlogic/meson-g12a-u200.dtb
+  platform.dtb_short: meson-g12a-u200.dtb
+  platform.fastboot: false
+  platform.name: meson-g12a-u200
+  platform.mach: amlogic
+  test.plan: boot
+  git.commit: aad39e30fb9e6e7212318a1dad898f36f1075648
+  git.describe: v5.2.9
+  git.branch: linux-5.2.y
+  git.url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+  device.type: meson-g12a-u200
+  job.arch: arm64
+  job.name: stable-linux-5.2.y-v5.2.9-arm64-defconfig-gcc-8-meson-g12a-u200.dtb-meson-g12a-u200-boot
+  job.kernel_url: http://storage.kernelci.org/stable/linux-5.2.y/v5.2.9/arm64/defconfig/gcc-8/Image
+  job.kernel_image: Image
+  job.modules_url: http://storage.kernelci.org/stable/linux-5.2.y/v5.2.9/arm64/defconfig/gcc-8/modules.tar.xz
+  job.initrd_url: https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-2-gefc755ba4a02/arm64/base/rootfs.cpio.gz
+  job.nfsrootfs_url: None
+  job.dtb_url: http://storage.kernelci.org/stable/linux-5.2.y/v5.2.9/arm64/defconfig/gcc-8/dtbs/amlogic/meson-g12a-u200.dtb
+  job.file_server_resource: stable/linux-5.2.y/v5.2.9/arm64/defconfig/gcc-8
+  job.build_environment: gcc-8
+
+
+
+
+
+
+
+device_type: meson-g12a-u200
+
+
+context:
+  extra_kernel_args: "console_msg_format=syslog"
+
+
+
+job_name: stable-linux-5.2.y-v5.2.9-arm64-defconfig-gcc-8-meson-g12a-u200.dtb-meson-g12a-u200-boot
+timeouts:
+  job:
+    minutes: 10
+  action:
+   minutes: 10
+  actions:
+    power-off:
+      seconds: 30
+priority: high
+visibility: public
+
+
+
+
+
+actions:
+- deploy:
+    timeout:
+      minutes: 10
+    to: tftp
+    kernel:
+      url: http://storage.kernelci.org/stable/linux-5.2.y/v5.2.9/arm64/defconfig/gcc-8/Image
+      type: image
+    ramdisk:
+      url: https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-2-gefc755ba4a02/arm64/base/rootfs.cpio.gz
+      compression: gz
+    modules:
+      url: http://storage.kernelci.org/stable/linux-5.2.y/v5.2.9/arm64/defconfig/gcc-8/modules.tar.xz
+      compression: xz
+    dtb:
+      url: http://storage.kernelci.org/stable/linux-5.2.y/v5.2.9/arm64/defconfig/gcc-8/dtbs/amlogic/meson-g12a-u200.dtb
+    os: oe
+
+
+- boot:
+    timeout:
+      minutes: 5
+    method: u-boot
+    commands: ramdisk
+    prompts:
+      - '/ #'
