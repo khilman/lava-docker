@@ -51,6 +51,12 @@ RUN if [ -x /usr/local/bin/extra_actions ] ; then /usr/local/bin/extra_actions ;
 COPY device-types/ /root/device-types/
 COPY health-checks/ /root/health-checks/
 
+# labgrid
+RUN apt install -y python3 python3-virtualenv python3-pip python3-setuptools virtualenv microcom
+RUN virtualenv -p python3 /labgrid-venv
+ENV PATH="/labgrid-venv/bin:$PATH"
+RUN git clone https://github.com/labgrid-project/labgrid && cd labgrid && pip install --upgrade .
+
 EXPOSE 69/udp 80
 
 CMD /usr/local/bin/start.sh
