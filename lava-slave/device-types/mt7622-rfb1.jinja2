@@ -1,0 +1,11 @@
+{# device_type = "mt7622-rfb1" #}
+{% extends 'base-uboot.jinja2' %}
+
+{% set uboot_mkimage_arch = 'arm' %}
+{% set interrupt_prompt = interrupt_prompt|default('stop autoboot') %}
+
+{% set booti_kernel_addr  = '0x40080000' %}
+{% set booti_dtb_addr     = '0x43f00000' %}
+{% set booti_ramdisk_addr = '0x44000000' %}
+
+{% set bootloader_prompt = "MT7622>" %}

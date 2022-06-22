@@ -1,0 +1,12 @@
+{# device_type = "mt7629-rfb" #}
+{% extends 'base-uboot.jinja2' %}
+{% set bootloader_prompt = bootloader_prompt|default('MT7629>') %}
+{% set interrupt_prompt = interrupt_prompt|default('Hit any key to stop autoboot') %}
+{% set interrupt_char = interrupt_char|default('') %}
+{% set bootm_kernel_addr = '0x41000000' %}
+{% set bootm_ramdisk_addr = '0x44000000' %}
+{% set bootm_dtb_addr = '0x43f00000' %}
+{% set bootz_kernel_addr = bootm_kernel_addr %}
+{% set bootz_ramdisk_addr = bootm_ramdisk_addr %}
+{% set bootz_dtb_addr = bootm_dtb_addr %}
+{% set uboot_mkimage_arch = 'arm' %}
