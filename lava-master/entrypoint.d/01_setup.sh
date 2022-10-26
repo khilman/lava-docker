@@ -1,4 +1,5 @@
 #!/bin/bash
+# shelcheck disable SC2166
 
 # always reset the lavaserver user, since its password could have been reseted in a "docker build --nocache"
 if [ ! -s /root/pg_lava_password ];then
@@ -87,7 +88,7 @@ if [ -e /root/lava-users ];then
 			echo "Skip already existing $USER DEBUG(with $TOKEN / $PASSWORD / $USER_OPTION)"
 		else
 			echo "Adding username $USER DEBUG(with $TOKEN / $PASSWORD / $USER_OPTION)"
-			lava-server manage users add --passwd $PASSWORD $USER_OPTION $USER
+			lava-server manage users add --passwd "$PASSWORD" $USER_OPTION "$USER"
 			if [ $? -ne 0 ];then
 				echo "ERROR: Adding user $USER"
 				cat /tmp/allusers
@@ -95,11 +96,11 @@ if [ -e /root/lava-users ];then
 			fi
 			if [ ! -z "$TOKEN" ];then
 				echo "Adding token to user $USER"
-				lava-server manage tokens add --user $USER --secret $TOKEN || exit 1
+				lava-server manage tokens add --user "$USER" --secret "$TOKEN" || exit 1
 			fi
 			if [ ! -z "$EMAIL" ];then
 				echo "Adding email to user $USER"
-				lava-server manage users update --email $EMAIL $USER || exit 1
+				lava-server manage users update --email "$EMAIL" "$USER" || exit 1
 			fi
 		fi
 	done
@@ -110,15 +111,15 @@ if [ -e /root/lava-groups ];then
 	echo "Handle groups"
 	echo "======================================================"
 	GROUP_CURRENT_LIST=/tmp/group.list
-	lava-server manage groups list > ${GROUP_CURRENT_LIST}.raw || exit 1
-	grep '^\*' ${GROUP_CURRENT_LIST}.raw > ${GROUP_CURRENT_LIST}
+	lava-server manage groups list > "${GROUP_CURRENT_LIST}.raw" || exit 1
+	grep '^\*' ${GROUP_CURRENT_LIST}.raw > "${GROUP_CURRENT_LIST}"
 	for group in $(ls /root/lava-groups/*group)
 	do
 		GROUPNAME=""
 		SUBMIT=0
 		OPTION_SUBMIT=""
 		. $group
-		grep -q $GROUPNAME $GROUP_CURRENT_LIST
+		grep -q "$GROUPNAME" "$GROUP_CURRENT_LIST"
 		if [ $? -eq 0 ];then
 			echo "DEBUG: SKIP creation of $GROUPNAME which already exists"
 		else
@@ -127,15 +128,15 @@ if [ -e /root/lava-groups ];then
 				OPTION_SUBMIT="--submitting"
 			fi
 			echo "DEBUG: Add group $GROUPNAME"
-			lava-server manage groups add $OPTION_SUBMIT $GROUPNAME || exit 1
+			lava-server manage groups add "$OPTION_SUBMIT" "$GROUPNAME" || exit 1
 		fi
-		if [ -e ${group}.list ];then
+		if [ -e "${group}.list" ];then
 			echo "DEBUG: Found ${group}.list"
 			while read username
 			do
 				echo "DEBUG: Add user $username to group $GROUPNAME"
-				lava-server manage groups update --username $username $GROUPNAME || exit 1
-			done < ${group}.list
+				lava-server manage groups update --username "$username" "$GROUPNAME" || exit 1
+			done < "${group}.list"
 		fi
 	done
 fi
@@ -143,7 +144,7 @@ fi
 if [ -e /root/lava-callback-tokens ];then
 	for ct in $(ls /root/lava-callback-tokens)
 	do
-		. /root/lava-callback-tokens/$ct
+		. "/root/lava-callback-tokens/$ct"
 		if [ -z "$USER" ];then
 			echo "Missing USER"
 			exit 1
@@ -156,12 +157,12 @@ if [ -e /root/lava-callback-tokens ];then
 			echo "Missing DESCRIPTION for $USER"
 			exit 1
 		fi
-		lava-server manage tokens list --user $USER |grep -q $TOKEN
+		lava-server manage tokens list --user "$USER" |grep -q "$TOKEN"
 		if [ $? -eq 0 ];then
 			echo "SKIP already present token for $USER"
 		else
 			echo "Adding $USER ($DESCRIPTION) DEBUG($TOKEN)"
-			lava-server manage tokens add --user $USER --secret $TOKEN --description "$DESCRIPTION" || exit 1
+			lava-server manage tokens add --user "$USER" --secret "$TOKEN" --description "$DESCRIPTION" || exit 1
 		fi
 	done
 fi
@@ -171,20 +172,20 @@ mkdir -p /root/.lavadocker/
 if [ -e /root/device-types ];then
 	for i in $(ls /root/device-types/*jinja2)
 	do
-		if [ -e /etc/lava-server/dispatcher-config/device-types/$(basename $i) ];then
+		if [ -e "/etc/lava-server/dispatcher-config/device-types/$(basename $i)" ];then
 			echo "WARNING: overwriting device-type $i"
-			diff -u "/etc/lava-server/dispatcher-config/device-types/$(basename $i)" $i
+			diff -u "/etc/lava-server/dispatcher-config/device-types/$(basename $i)" "$i"
 		fi
-		cp $i /etc/lava-server/dispatcher-config/device-types/
-		chown lavaserver:lavaserver /etc/lava-server/dispatcher-config/device-types/$(basename $i)
-		devicetype=$(basename $i |sed 's,.jinja2,,')
+		cp "$i" /etc/lava-server/dispatcher-config/device-types/
+		chown lavaserver:lavaserver "/etc/lava-server/dispatcher-config/device-types/$(basename $i)"
+		devicetype="$(basename $i |sed 's,.jinja2,,')"
 		lava-server manage device-types list | grep -q "[[:space:]]$devicetype[[:space:]]"
 		if [ $? -eq 0 ];then
 			echo "Skip already known $devicetype"
 		else
 			echo "Adding custom $devicetype"
-			lava-server manage device-types add $devicetype || exit $?
-			touch /root/.lavadocker/devicetype-$devicetype
+			lava-server manage device-types add "$devicetype" || exit $?
+			touch "/root/.lavadocker/devicetype-$devicetype"
 		fi
 	done
 fi
@@ -192,21 +193,21 @@ fi
 for worker in $(ls /root/devices/)
 do
 	echo "Adding worker $worker"
-	lava-server manage workers add $worker || exit $?
+	lava-server manage workers add "$worker" || exit $?
 	for device in $(ls /root/devices/$worker/)
 	do
-		devicename=$(echo $device | sed 's,.jinja2,,')
+		devicename="$(echo $device | sed 's,.jinja2,,')"
 		devicetype=$(grep -h extends /root/devices/$worker/$device| grep -o '[a-zA-Z0-9_-]*.jinja2' | sed 's,.jinja2,,')
-		if [ -e /root/.lavadocker/devicetype-$devicetype ];then
+		if [ -e "/root/.lavadocker/devicetype-$devicetype" ];then
 			echo "Skip devicetype $devicetype"
 		else
 			echo "Add devicetype $devicetype"
-			lava-server manage device-types add $devicetype || exit $?
-			touch /root/.lavadocker/devicetype-$devicetype
+			lava-server manage device-types add "$devicetype" || exit $?
+			touch "/root/.lavadocker/devicetype-$devicetype"
 		fi
 		echo "Add device $devicename on $worker"
-		cp /root/devices/$worker/$device /etc/lava-server/dispatcher-config/devices/ || exit $?
-		lava-server manage devices add --device-type $devicetype --worker $worker $devicename || exit $?
+		cp "/root/devices/$worker/$device" /etc/lava-server/dispatcher-config/devices/ || exit $?
+		lava-server manage devices add --device-type "$devicetype" --worker "$worker" "$devicename" || exit $?
 	done
 done
 
